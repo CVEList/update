@@ -26,6 +26,7 @@ jobs:
 
       - name: Run update script
         run: |
+          git pull
           bash ./fetch-updates.sh -n -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
 
       - name: Commit and push changes
