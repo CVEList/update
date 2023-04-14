@@ -20,7 +20,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip3 install virtualenv
+          virtualenv env --python=python3
+          env/bin/pip install -r requirements.txt
 
       - name: Run update script
         run: |
