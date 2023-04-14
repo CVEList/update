@@ -27,7 +27,7 @@ jobs:
       - name: Run update script
         run: |
           git pull
-          bash ./fetch-updates.sh -n -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
+          bash fetch-updates.sh -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v4
