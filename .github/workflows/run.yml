@@ -24,7 +24,7 @@ jobs:
 
       - name: Run update script
         run: |
-          bash path/to/update-script.sh -n -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
+          bash update-script.sh -n -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v4
