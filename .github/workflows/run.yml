@@ -28,20 +28,8 @@ jobs:
       - name: Generate new CVE Info list
         id: new-additions
         run: |
-          git pull
+          git push
           chmod +x install.sh
           ./install.sh
           chmod +x fetch-updates.sh
           bash fetch-updates.sh -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
-      - name: Run update
-        run: |
-          git config --local user.email "bot@github.com"
-          git config --local user.name "bot"
-          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git pull --rebase
-          go build update.go utils.go
-          ./update
-          rm update
-          git add .
-          git commit -m "Auto Update `date --rfc-3339=seconds`"
-          git push -f
