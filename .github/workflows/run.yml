@@ -33,12 +33,15 @@ jobs:
           ./install.sh
           chmod +x fetch-updates.sh
           bash fetch-updates.sh -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
-      - name: Commit files
+      - name: Run update
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          git config --local user.email "bot@github.com"
+          git config --local user.name "bot"
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git pull --rebase
+          go build update.go utils.go
+          ./update
+          rm update
+          git add .
+          git commit -m "Auto Update `date --rfc-3339=seconds`"
+          git push -f
