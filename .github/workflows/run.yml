@@ -1,35 +1,36 @@
-name: 🥳 New CVE List
+name: Data Update
 
 on:
   push:
     branches:
       - main
-  schedule:
-    - cron: '0 * * * *' # Runs every hour at the start of the hour
-  
-  workflow_dispatch:
 
 jobs:
-  templates:
+  data-update:
     runs-on: ubuntu-latest
-    if: github.repository == 'CVEList/update'
     steps:
-      - uses: actions/checkout@master
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: false
-          fetch-depth: 0
-      - name: Install Dependences
-        run: |
-            sudo apt install -yy python3
-            python3 -m venv env
-            source env/bin/activate
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Generate new CVE Info list
-        id: new-additions
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
         run: |
-          git pull
-          chmod +x install.sh
-          ./install.sh
-          chmod +x fetch-updates.sh
-          bash fetch-updates.sh -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run update script
+        run: |
+          bash path/to/update-script.sh -n -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Data update"
+          branch: ${{ github.ref }}
+          commit_options: "--no-verify"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
