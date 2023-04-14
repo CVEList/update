@@ -45,7 +45,7 @@ while (( "$#" )); do
 done
 
 [[ ${GIT_USERNAME} -ne "" && ${GIT_PASSWORD} -ne "" ]] && {
-	GIT_ORIGIN="https://${GIT_USERNAME}:${GIT_USERNAME}@github.com/Patrowl/PatrowlHearsData"
+	GIT_ORIGIN="https://${GIT_USERNAME}:${GIT_USERNAME}@github.com/CVEList/update"
 }
 
 start_time="$(date -u +%s)"
