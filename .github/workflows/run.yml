@@ -28,7 +28,7 @@ jobs:
       - name: Generate new CVE Info list
         id: new-additions
         run: |
-          git push
+          git pull
           chmod +x install.sh
           ./install.sh
           chmod +x fetch-updates.sh
