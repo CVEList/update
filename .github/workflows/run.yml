@@ -24,11 +24,7 @@ jobs:
 
       - name: Run update script
         run: |
-          git pull
-          chmod +x install.sh
-          ./install.sh
-          chmod +x fetch-updates.sh
-          bash ./update-script.sh -n -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
+          bash ./fetch-updates.sh -n -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v4
