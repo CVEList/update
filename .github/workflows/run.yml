@@ -1,0 +1,43 @@
+name: 🥳 New CVE List
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 * * * *' # Runs every hour at the start of the hour
+  
+  workflow_dispatch:
+
+jobs:
+  templates:
+    runs-on: ubuntu-latest
+    if: github.repository == 'CVEList/update'
+    steps:
+      - uses: actions/checkout@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Install Dependences
+        run: |
+            sudo apt install -yy python3
+            source env/bin/activate
+
+      - name: Generate new CVE Info list
+        id: new-additions
+        run: |
+          git pull
+          chmod +x install.sh
+          ./install.sh
+          chmod +x fetch-updates.sh
+          bash fetch-updates.sh -p -u ${{ secrets.GIT_USERNAME }} -w ${{ secrets.GIT_PASSWORD }}
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
